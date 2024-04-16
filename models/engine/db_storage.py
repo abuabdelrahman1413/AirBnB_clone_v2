@@ -47,15 +47,25 @@ class DBStorage:
                 will contain instances of.
         """
         myObjects = {}
+        hpwd = md5()
         if cls is None:
-            print(Base.metadata.tables.items())
+            #print(Base.metadata.tables.items())
+            tables = Base.__subclasses__()
+            for Table in tables:
+                rows = self.__session.query(Table).all()
+                for row in rows:
+                    del row.__dict__['_sa_instance_state']
+                    if 'password' in row.__dict__:
+                        hpwd.update(row.__dict__['password'].encode('utf-8'))
+                        row.__dict__['password'] = hpwd.hexdigest()
+                    myObjects["{}.{}".format(
+                        type(row).__name__, row.__dict__['id'])] = row
         else:
             for obj in self.__session.query(cls).all():
                 del obj.__dict__['_sa_instance_state']
                 if 'password' in obj.__dict__:
-                    hashed_pwd = md5()
-                    hashed_pwd.update(obj.__dict__['password'].encode('utf-8'))
-                    obj.__dict__['password'] = hashed_pwd.hexdigest()
+                    hpwd.update(obj.__dict__['password'].encode('utf-8'))
+                    obj.__dict__['password'] = hpwd.hexdigest()
                 myObjects["{}.{}".format(
                     type(obj).__name__, obj.__dict__['id'])] = obj
         return myObjects

@@ -217,14 +217,14 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            clsName = args.split(' ')[0]  # remove possible trailing args
-            if clsName not in HBNBCommand.classes:
+            args = args.split(' ')[0]  # remove possible trailing args
+            if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
-            else:
-                myClass = HBNBCommand.classes[clsName]
-                for object in storage.all(myClass).values():
-                    if not clsName or clsName == object.__class__.__name__:
-                        print_list.append(str(object))
+                return
+            
+            for key, v in storage.all(HBNBCommand.classes[args]).items():
+                if key.split('.')[0] == args:
+                    print_list.append(str(v))
         else:
             for key, value in storage.all().items():
                 print_list.append(str(value))
