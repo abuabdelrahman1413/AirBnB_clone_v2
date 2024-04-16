@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 key, value = arg.split('=')
                 if value.startswith('\"'):
                     value = value.replace('\"', '')
-                    value = value.replace(' ', '_')
+                    value = value.replace('_', ' ')
                 elif '.' in value:
                     value = float(value)
                 else:
@@ -137,6 +137,7 @@ class HBNBCommand(cmd.Cmd):
             except Exception as e:
                 pass
         print(new_instance.id)
+        storage.new(new_instance)
         storage.save()
 
     def help_create(self):
