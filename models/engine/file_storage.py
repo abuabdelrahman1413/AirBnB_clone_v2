@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This module defines a class to manage file storage for hbnb clone"""
 import json
+from hashlib import md5
 
 
 class FileStorage:
@@ -14,6 +15,10 @@ class FileStorage:
             tempDict = {}
             for key, value in FileStorage.__objects.items():
                 if value.__class__ == cls:
+                    if 'password' in value.__dict__:
+                        hpwd = md5()
+                        hpwd.update(value.__dict__['password'].encode('utf-8'))
+                        value.__dict__['password'] = hpwd.hexdigest()
                     tempDict[key] = value
             return tempDict
         else:

@@ -47,7 +47,7 @@ class DBStorage:
                 will contain instances of.
         """
         myObjects = {}
-        if (cls == None):
+        if cls is None:
             print(Base.metadata.tables.items())
         else:
             for obj in self.__session.query(cls).all():
@@ -56,7 +56,8 @@ class DBStorage:
                     hashed_pwd = md5()
                     hashed_pwd.update(obj.__dict__['password'].encode('utf-8'))
                     obj.__dict__['password'] = hashed_pwd.hexdigest()
-                myObjects["{}.{}".format(type(obj).__name__, obj.__dict__['id'])] = obj
+                myObjects["{}.{}".format(
+                    type(obj).__name__, obj.__dict__['id'])] = obj
         return myObjects
 
     def new(self, obj):
@@ -90,6 +91,7 @@ class DBStorage:
         from models.review import Review
 
         Base.metadata.create_all(self.__engine)
-        session_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(
+            bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
