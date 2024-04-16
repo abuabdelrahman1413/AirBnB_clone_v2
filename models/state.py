@@ -4,6 +4,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 
+
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = 'states'
@@ -17,6 +18,6 @@ class State(BaseModel, Base):
         for key, value in storage.all().items():
             if type(value).__name__ == 'City':
                 if ('state_id' in value.__dict__ and
-                    str(value.__dict__['state_id']) == self.id):
+                        str(value.__dict__['state_id']) == self.id):
                     citieslist.append(value)
         return (citieslist)
