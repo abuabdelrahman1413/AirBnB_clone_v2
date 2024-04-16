@@ -57,7 +57,6 @@ class DBStorage:
                        obj for obj in myObjects}
         return rDict
 
-
     def new(self, obj):
         """Adds the object in the `obj` variable to the current
         database session.
