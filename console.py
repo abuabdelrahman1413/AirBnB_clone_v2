@@ -126,15 +126,14 @@ class HBNBCommand(cmd.Cmd):
         for arg in cmdLine[1:]:
             try:
                 key, value = arg.split('=')
-                if value.startswith('\"'):
-                    value = value.replace('\"', '')
-                    value = value.replace('_', ' ')
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1].replace('"', '\\"').replace('_', ' ')
                 elif '.' in value:
                     value = float(value)
                 else:
                     value = int(value)
                 setattr(new_instance, key, value)
-            except Exception as e:
+            except Exception:
                 pass
         print(new_instance.id)
         storage.new(new_instance)
@@ -169,7 +168,9 @@ class HBNBCommand(cmd.Cmd):
 
         key = c_name + "." + c_id
         try:
-            print(storage._FileStorage__objects[key])
+            objects = storage.all()
+            if key in objects:
+                print(objects[key])
         except KeyError:
             print("** no instance found **")
 
@@ -216,17 +217,13 @@ class HBNBCommand(cmd.Cmd):
         print_list = []
 
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
+            clsName = args.split(' ')[0]  # remove possible trailing args
+            if clsName not in HBNBCommand.classes:
                 print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
-        else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
+            else:
+                for object in storage.all().values():
+                    if not clsName or clsName == object.__class__.__name__:
+                        print_list.append(str(object))
         print(print_list)
 
     def help_all(self):
