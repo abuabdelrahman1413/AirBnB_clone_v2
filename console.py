@@ -225,6 +225,9 @@ class HBNBCommand(cmd.Cmd):
                 for object in storage.all(myClass).values():
                     if not clsName or clsName == object.__class__.__name__:
                         print_list.append(str(object))
+        else:
+            for key, value in storage.all().items():
+                print_list.append(str(value))
         print(print_list)
 
     def help_all(self):
