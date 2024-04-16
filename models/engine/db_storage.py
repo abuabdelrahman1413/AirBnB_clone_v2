@@ -2,8 +2,16 @@
 """This module defines a class to Database storage operations for
 the HBnB clone project.
 """
+
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.sql import text
 from models.base_model import Base
 import os
 
@@ -37,10 +45,14 @@ class DBStorage:
             cls(Class Obj): Class that the returned dictionary
                 will contain instances of.
         """
+        myObjects = {}
         if (cls == None):
             print(Base.metadata.tables.items())
         else:
-            result = self.__session.query(cls).all()
+            for obj in self.__session.query(cls).all():
+                del obj.__dict__['_sa_instance_state']
+                myObjects["{}.{}".format(type(obj).__name__, obj.__dict__['id'])] = obj
+        return myObjects
 
     def new(self, obj):
         """Adds the object in the `obj` variable to the current

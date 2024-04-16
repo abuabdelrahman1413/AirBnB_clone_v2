@@ -221,7 +221,8 @@ class HBNBCommand(cmd.Cmd):
             if clsName not in HBNBCommand.classes:
                 print("** class doesn't exist **")
             else:
-                for object in storage.all().values():
+                myClass = HBNBCommand.classes[clsName]
+                for object in storage.all(myClass).values():
                     if not clsName or clsName == object.__class__.__name__:
                         print_list.append(str(object))
         print(print_list)
