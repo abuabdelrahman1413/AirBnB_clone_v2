@@ -3,7 +3,7 @@
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
-
+from models.place import Place
 
 class User(BaseModel, Base):
     """This class defines a user by various attributes"""
@@ -14,4 +14,4 @@ class User(BaseModel, Base):
     first_name = Column(String(128))
     last_name = Column(String(128))
 
-    places = relationship("places", backref="users", cascade='all, delete')
+    places = relationship("Place", backref="users", cascade='all, delete')
