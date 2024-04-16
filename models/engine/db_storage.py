@@ -46,29 +46,17 @@ class DBStorage:
             cls(Class Obj): Class that the returned dictionary
                 will contain instances of.
         """
-        myObjects = {}
-        hpwd = md5()
         if cls is None:
-            #print(Base.metadata.tables.items())
-            tables = Base.__subclasses__()
-            for Table in tables:
-                rows = self.__session.query(Table).all()
-                for row in rows:
-                    del row.__dict__['_sa_instance_state']
-                    if 'password' in row.__dict__:
-                        hpwd.update(row.__dict__['password'].encode('utf-8'))
-                        row.__dict__['password'] = hpwd.hexdigest()
-                    myObjects["{}.{}".format(
-                        type(row).__name__, row.__dict__['id'])] = row
+            myObjects = []
+            for mClass in [User, State, City, Amenity, Place, Review]:
+                myObjects.extend(self.__session.query(mClass).all())
         else:
-            for obj in self.__session.query(cls).all():
-                del obj.__dict__['_sa_instance_state']
-                if 'password' in obj.__dict__:
-                    hpwd.update(obj.__dict__['password'].encode('utf-8'))
-                    obj.__dict__['password'] = hpwd.hexdigest()
-                myObjects["{}.{}".format(
-                    type(obj).__name__, obj.__dict__['id'])] = obj
-        return myObjects
+            myObjects = self.__session.query(cls).all()
+
+        rDict = {"{}.{}".format(type(obj).__name__, obj.id):
+                       obj for obj in myObjects}
+        return rDict
+
 
     def new(self, obj):
         """Adds the object in the `obj` variable to the current
