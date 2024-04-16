@@ -13,6 +13,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy.sql import text
 from models.base_model import Base
+from hashlib import md5
 import os
 
 
@@ -51,6 +52,10 @@ class DBStorage:
         else:
             for obj in self.__session.query(cls).all():
                 del obj.__dict__['_sa_instance_state']
+                if 'password' in obj.__dict__:
+                    hashed_pwd = md5()
+                    hashed_pwd.update(obj.__dict__['password'].encode('utf-8'))
+                    obj.__dict__['password'] = hashed_pwd.hexdigest()
                 myObjects["{}.{}".format(type(obj).__name__, obj.__dict__['id'])] = obj
         return myObjects
 
