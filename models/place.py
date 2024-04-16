@@ -7,6 +7,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import models
 import os
 
+
 place_amenity = Table('place_amenity',
                       Base.metadata,
                       Column('place_id', String(60),
@@ -17,6 +18,7 @@ place_amenity = Table('place_amenity',
                              ForeignKey('amenities.id'),
                              primary_key=True,
                              nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -35,8 +37,10 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
-        reviews = relationship("Review", cascade='all, delete', backref="place")
-        amenities = relationship("Amenity", secondary=place_amenity, viewonly=False, backref='place_amenities')
+        reviews = relationship("Review", cascade='all, delete',
+                               backref="place")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False, backref='place_amenities')
     else:
         @property
         def reviews(self):
