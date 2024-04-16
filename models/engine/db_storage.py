@@ -54,7 +54,7 @@ class DBStorage:
             myObjects = self.__session.query(cls).all()
 
         rDict = {"{}.{}".format(type(obj).__name__, obj.id):
-                       obj for obj in myObjects}
+                 obj for obj in myObjects}
         return rDict
 
     def new(self, obj):
