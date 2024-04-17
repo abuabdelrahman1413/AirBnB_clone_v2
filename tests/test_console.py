@@ -141,6 +141,7 @@ class test_create_console_filestorage(unittest.TestCase):
             HBNBCommand().onecmd("create Amenity hello world")
         self.assertEqual(len(f.getvalue()), 37)
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  "tests only when in DB mode")
 class test_all_console_db(unittest.TestCase):
@@ -230,7 +231,6 @@ class test_all_console_db(unittest.TestCase):
                 self.assertTrue("State" in string)
                 self.assertTrue("City" not in string)
                 self.assertTrue("Amenity" not in string)
-
 
 
 if __name__ == "__main__":
