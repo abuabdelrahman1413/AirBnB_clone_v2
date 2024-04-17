@@ -17,6 +17,7 @@ import sqlalchemy
 import unittest
 import os
 import sys
+import pycodestyle
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
@@ -359,6 +360,24 @@ class test_all_console_db(unittest.TestCase):
         self.assertTrue("[State]" not in string)
         self.assertTrue("[City]" not in string)
         self.assertTrue("[Amenity]" in string)
+
+    def test_python_code_style(self):
+        """Test Python Code Style"""
+        style = pycodestyle.StyleGuide(quiet=True)
+        py = style.check_files(['console.py'])
+        self.assertEqual(py.total_errors, 0, "Fix pep8")
+
+    def test_doc_console(self):
+        """Test DocString for Console"""
+        self.assertIsNotNone(HBNBCommand.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
+        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
+        self.assertIsNotNone(HBNBCommand.emptyline.__doc__)
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
