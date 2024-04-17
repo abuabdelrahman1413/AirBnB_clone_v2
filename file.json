@@ -1,1 +1,1 @@
-{"User.63e669ed-f779-447a-b708-300983655fbb": {"id": "63e669ed-f779-447a-b708-300983655fbb", "created_at": "2024-04-16T16:12:13.090624", "updated_at": "2024-04-16T16:12:13.090635", "email": "gui@hbtn.io", "password": "guipwd", "first_name": "Guillaume", "last_name": "Snow", "__class__": "User"}, "BaseModel.a8004e72-ecac-4b43-ad5a-f4292ccff3f9": {"id": "a8004e72-ecac-4b43-ad5a-f4292ccff3f9", "created_at": "2024-04-16T17:02:20.968714", "updated_at": "2024-04-16T17:02:20.968720", "__class__": "BaseModel"}}
+{}
