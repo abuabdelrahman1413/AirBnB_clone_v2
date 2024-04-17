@@ -54,7 +54,7 @@ class test_dbstorage(unittest.TestCase):
         self.assertIsInstance(temp, dict)
         self.assertEqual(len(temp), 2)
 
-    def test_state_instantiation(self):
+    def test_db_obj_instantiation(self):
         """ db doesn't change on object instantiation """
         before = test_dbstorage.cur.execute('SELECT * FROM states')
         new = State(**{'name': 'Washington'})
