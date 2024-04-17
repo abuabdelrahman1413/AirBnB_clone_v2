@@ -16,6 +16,7 @@ import MySQLdb
 import sqlalchemy
 import unittest
 import os
+import sys
 
 
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
@@ -146,7 +147,7 @@ class test_create_console_filestorage(unittest.TestCase):
                  "tests only when in DB mode")
 class test_all_console_db(unittest.TestCase):
     """This class tests the create command of the console
-    program
+    program using db
     """
 
     def setUp(self):
@@ -161,6 +162,7 @@ class test_all_console_db(unittest.TestCase):
 
     def tearDown(self):
         """"""
+        sys.stdout.flush()
         self.cur.execute('DELETE FROM place_amenity')
         self.cur.execute('DELETE FROM places')
         self.cur.execute('DELETE FROM cities')
@@ -169,6 +171,8 @@ class test_all_console_db(unittest.TestCase):
         self.cur.execute('DELETE FROM amenities')
         self.cur.execute('DELETE FROM reviews')
         self.db.commit()
+        self.cur.close()
+        self.db.close()
 
     def test_all_no_args(self):
         """"""
@@ -194,43 +198,167 @@ class test_all_console_db(unittest.TestCase):
         storage.save()
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("all")
-        string = f.getvalue()
+            string = f.getvalue()
         self.assertTrue("User" in string)
         self.assertTrue("Place" in string)
         self.assertTrue("State" in string)
         self.assertTrue("City" in string)
         self.assertTrue("Amenity" in string)
 
-        def test_all_state(self):
-            """"""
-            state = State(name="California")
-            state.save()
-            city = City(state_id=state.id, name="San Francisco")
-            city.save()
-            user = User(email="john@snow.com", password="johnpwd")
-            user.save()
-            place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
-            place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
-            place_1.save()
-            place_2.save()
-            amenity_1 = Amenity(name="Wifi")
-            amenity_1.save()
-            amenity_2 = Amenity(name="Cable")
-            amenity_2.save()
-            amenity_3 = Amenity(name="Oven")
-            amenity_3.save()
-            place_2.amenities.append(amenity_1)
-            place_2.amenities.append(amenity_2)
-            place_2.amenities.append(amenity_3)
-            storage.save()
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("all")
-                string = f.getvalue()
-                self.assertTrue("User" not in string)
-                self.assertTrue("Place" not in string)
-                self.assertTrue("State" in string)
-                self.assertTrue("City" not in string)
-                self.assertTrue("Amenity" not in string)
+    def test_all_state(self):
+        """"""
+        state = State(name="California")
+        state.save()
+        city = City(state_id=state.id, name="San Francisco")
+        city.save()
+        user = User(email="john@snow.com", password="johnpwd")
+        user.save()
+        place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+        place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+        place_1.save()
+        place_2.save()
+        amenity_1 = Amenity(name="Wifi")
+        amenity_1.save()
+        amenity_2 = Amenity(name="Cable")
+        amenity_2.save()
+        amenity_3 = Amenity(name="Oven")
+        amenity_3.save()
+        place_2.amenities.append(amenity_1)
+        place_2.amenities.append(amenity_2)
+        place_2.amenities.append(amenity_3)
+        storage.save()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all State")
+            string = f.getvalue()
+        self.assertTrue("[User]" not in string)
+        self.assertTrue("[Place]" not in string)
+        self.assertTrue("[State]" in string)
+        self.assertTrue("[City]" not in string)
+        self.assertTrue("[Amenity]" not in string)
+
+    def test_all_user(self):
+        """"""
+        state = State(name="California")
+        state.save()
+        city = City(state_id=state.id, name="San Francisco")
+        city.save()
+        user = User(email="john@snow.com", password="johnpwd")
+        user.save()
+        place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+        place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+        place_1.save()
+        place_2.save()
+        amenity_1 = Amenity(name="Wifi")
+        amenity_1.save()
+        amenity_2 = Amenity(name="Cable")
+        amenity_2.save()
+        amenity_3 = Amenity(name="Oven")
+        amenity_3.save()
+        place_2.amenities.append(amenity_1)
+        place_2.amenities.append(amenity_2)
+        place_2.amenities.append(amenity_3)
+        storage.save()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all User")
+            string = f.getvalue()
+        self.assertTrue("[User]" in string)
+        self.assertTrue("[Place]" not in string)
+        self.assertTrue("[State]" not in string)
+        self.assertTrue("[City]" not in string)
+        self.assertTrue("[Amenity]" not in string)
+
+    def test_all_place(self):
+        """"""
+        state = State(name="California")
+        state.save()
+        city = City(state_id=state.id, name="San Francisco")
+        city.save()
+        user = User(email="john@snow.com", password="johnpwd")
+        user.save()
+        place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+        place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+        place_1.save()
+        place_2.save()
+        amenity_1 = Amenity(name="Wifi")
+        amenity_1.save()
+        amenity_2 = Amenity(name="Cable")
+        amenity_2.save()
+        amenity_3 = Amenity(name="Oven")
+        amenity_3.save()
+        place_2.amenities.append(amenity_1)
+        place_2.amenities.append(amenity_2)
+        place_2.amenities.append(amenity_3)
+        storage.save()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all City")
+            string = f.getvalue()
+        self.assertTrue("[User]" not in string)
+        self.assertTrue("[Place]" not in string)
+        self.assertTrue("[State]" not in string)
+        self.assertTrue("[City]" in string)
+        self.assertTrue("[Amenity]" not in string)
+
+    def test_all_city(self):
+        """"""
+        state = State(name="California")
+        state.save()
+        city = City(state_id=state.id, name="San Francisco")
+        city.save()
+        user = User(email="john@snow.com", password="johnpwd")
+        user.save()
+        place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+        place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+        place_1.save()
+        place_2.save()
+        amenity_1 = Amenity(name="Wifi")
+        amenity_1.save()
+        amenity_2 = Amenity(name="Cable")
+        amenity_2.save()
+        amenity_3 = Amenity(name="Oven")
+        amenity_3.save()
+        place_2.amenities.append(amenity_1)
+        place_2.amenities.append(amenity_2)
+        place_2.amenities.append(amenity_3)
+        storage.save()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all City")
+            string = f.getvalue()
+        self.assertTrue("[User]" not in string)
+        self.assertTrue("[Place]" not in string)
+        self.assertTrue("[State]" not in string)
+        self.assertTrue("[City]" in string)
+        self.assertTrue("[Amenity]" not in string)
+
+    def test_all_amenity(self):
+        """"""
+        state = State(name="California")
+        state.save()
+        city = City(state_id=state.id, name="San Francisco")
+        city.save()
+        user = User(email="john@snow.com", password="johnpwd")
+        user.save()
+        place_1 = Place(user_id=user.id, city_id=city.id, name="House 1")
+        place_2 = Place(user_id=user.id, city_id=city.id, name="House 2")
+        place_1.save()
+        place_2.save()
+        amenity_1 = Amenity(name="Wifi")
+        amenity_1.save()
+        amenity_2 = Amenity(name="Cable")
+        amenity_2.save()
+        amenity_3 = Amenity(name="Oven")
+        amenity_3.save()
+        place_2.amenities.append(amenity_1)
+        place_2.amenities.append(amenity_2)
+        place_2.amenities.append(amenity_3)
+        storage.save()
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all Amenity")
+            string = f.getvalue()
+        self.assertTrue("[User]" not in string)
+        self.assertTrue("[Place]" not in string)
+        self.assertTrue("[State]" not in string)
+        self.assertTrue("[City]" not in string)
+        self.assertTrue("[Amenity]" in string)
 
 
 if __name__ == "__main__":
