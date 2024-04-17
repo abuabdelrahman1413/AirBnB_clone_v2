@@ -360,6 +360,81 @@ class test_all_console_db(unittest.TestCase):
         self.assertTrue("[City]" not in string)
         self.assertTrue("[Amenity]" in string)
 
+@unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                 "tests only when in DB mode")
+class Console_show_test(unittest.TestCase):
+    """This class tests the show command of the console
+    """
+    def test_show_only_cmd(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show")
+        self.assertEqual(f.getvalue(), "** class name missing **\n")
+
+    def test_fake_class_arg(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show ROBOT")
+        self.assertEqual(f.getvalue(), "** class doesn't exist **\n")
+
+    def test_valid_class_only_arg(self):
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Review")
+        self.assertEqual(f.getvalue(), "** instance id missing **\n")
+
+    def test_review_class_arg(self):
+        a = Review()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Review {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_place_class_arg(self):
+        a = Place()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Place {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_BaseModel_class_arg(self):
+        a = BaseModel()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show BaseModel {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_User_class_arg(self):
+        a = User()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show User {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_Amenity_class_arg(self):
+        a = Amenity()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show Amenity {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_City_class_arg(self):
+        a = City()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show City {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_State_class_arg(self):
+        a = State()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show State {}".format(a.id))
+        self.assertEqual(f.getvalue(), "{}\n".format(str(a)))
+
+    def test_more_than_three_args(self):
+        a = User()
+        storage.new(a)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("show City {} 4thargument".format(a.id))
+
 
 if __name__ == "__main__":
     unittest.main()
