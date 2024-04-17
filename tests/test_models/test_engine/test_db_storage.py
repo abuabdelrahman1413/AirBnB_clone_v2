@@ -2,10 +2,12 @@
 """ Module for testing file storage"""
 import unittest
 from models.base_model import BaseModel, Base
+from models.engine.db_storage import DBStorage
 from models.state import State
 from models.user import User
 from models import storage
 import os
+import pycodestyle
 import MySQLdb
 
 
@@ -124,6 +126,7 @@ class test_dbstorage(unittest.TestCase):
         _id = new.to_dict()['id']
         storage.new(new)
         storage.save()
+        temp = 0
         for key in storage.all().keys():
             temp = key
         self.assertEqual(temp, ('State' + '.' + _id))
@@ -132,3 +135,23 @@ class test_dbstorage(unittest.TestCase):
         """ FileStorage object storage created """
         from models.engine.db_storage import DBStorage
         self.assertEqual(type(storage), DBStorage)
+
+    def test_pycode_style(self):
+        """ Test for PythonCodeStyle """
+        style = pycodestyle.StyleGuide(quiet=True)
+        py = style.check_files(['models/engine/db_storage.py'])
+        self.assertEqual(py.total_errors, 0, "fix pep8")
+
+    def test_doc_string_db_storage(self):
+        """ Test for Doc String"""
+        self.assertIsNotNone(DBStorage.__doc__)
+        self.assertIsNotNone(DBStorage.__init__.__doc__)
+        self.assertIsNotNone(DBStorage.all.__doc__)
+        self.assertIsNotNone(DBStorage.new.__doc__)
+        self.assertIsNotNone(DBStorage.save.__doc__)
+        self.assertIsNotNone(DBStorage.delete.__doc__)
+        self.assertIsNotNone(DBStorage.reload.__doc__)
+
+
+if __name__ == "__main__":
+    unittest.main()
