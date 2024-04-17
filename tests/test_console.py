@@ -360,6 +360,7 @@ class test_all_console_db(unittest.TestCase):
         self.assertTrue("[City]" not in string)
         self.assertTrue("[Amenity]" in string)
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                  "tests only when in DB mode")
 class Console_show_test(unittest.TestCase):

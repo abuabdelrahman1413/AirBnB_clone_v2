@@ -8,6 +8,7 @@ from models import storage
 import os
 import MySQLdb
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') != 'db',
                  'testing dbstorage only')
 class test_dbstorage(unittest.TestCase):
@@ -124,7 +125,7 @@ class test_dbstorage(unittest.TestCase):
         storage.new(new)
         storage.save()
         for key in storage.all().keys():
-                temp = key
+            temp = key
         self.assertEqual(temp, ('State' + '.' + _id))
 
     def test_storage_var_created(self):

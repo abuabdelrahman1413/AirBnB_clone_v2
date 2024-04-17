@@ -5,6 +5,7 @@ from models.base_model import BaseModel
 from models import storage
 import os
 
+
 @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
                  'testing filestorage only')
 class test_fileStorage(unittest.TestCase):
@@ -22,7 +23,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception as e:
             pass
 
     def test_obj_list_empty(self):
@@ -104,7 +105,7 @@ class test_fileStorage(unittest.TestCase):
         _id = new.to_dict()['id']
         storage.new(new)
         for key in storage.all().keys():
-                temp = key
+            temp = key
         self.assertEqual(temp, ('BaseModel' + '.' + _id))
 
     def test_storage_var_created(self):
