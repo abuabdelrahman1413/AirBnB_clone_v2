@@ -20,5 +20,5 @@ class test_City(test_basemodel):
 
     def test_name(self):
         """ """
-        new = self.value()
-        self.assertEqual(type(new).__name__, self.name)
+        new = self.value(**{'name': 'Alexandria'})
+        self.assertEqual(type(new.name), str)
