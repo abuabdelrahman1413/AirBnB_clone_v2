@@ -31,7 +31,8 @@ class test_fileStorage(unittest.TestCase):
     def test_new(self):
         """ New object is correctly added to __objects """
         new = BaseModel()
-        temp = None
+        storage.new(new)
+        storage.save()
         for obj in storage.all().values():
             temp = obj
         self.assertTrue(temp is new)
@@ -108,5 +109,4 @@ class test_fileStorage(unittest.TestCase):
     def test_storage_var_created(self):
         """ FileStorage object storage created """
         from models.engine.file_storage import FileStorage
-        print(type(storage))
         self.assertEqual(type(storage), FileStorage)
