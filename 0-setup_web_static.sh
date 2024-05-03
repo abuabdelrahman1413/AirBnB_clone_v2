@@ -13,9 +13,5 @@ echo "<html>
 </html>" | sudo tee /data/web_static/releases/test/index.html
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 chown -R ubuntu:ubuntu /data/
-conf="location /hbnb_static {
-	       alias /data/web_static/current/
-}
-"
-sudo sed -i "/server_name _;/a $conf/"
+sudo sed -i "/server_name _;/a \\tlocation /hbnb_static {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
 sudo service nginx restart
