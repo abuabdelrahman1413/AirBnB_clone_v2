@@ -38,7 +38,11 @@ def do_deploy(archive_path):
         sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
             name_tgz, name_notgz))
         sudo("rm /tmp/{}".format(name_tgz))
-        sudo("rm /data/web_static/current")
+        sudo(("mv /data/web_static/releases/{}/web_static/* " +
+              "/data/web_static/releases/{}").format(name_notgz, name_notgz))
+        sudo("rm -rf /data/web_static/releases/{}/web_static".format(
+            name_notgz))
+        sudo("rm -rf /data/web_static/current")
         sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
              .format(name_notgz))
     except Exception:
