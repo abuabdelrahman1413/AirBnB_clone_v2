@@ -5,7 +5,7 @@ function do_pack
 """
 from fabric.api import *
 from datetime import datetime
-from os.path import exists
+from os.path import isfile
 
 
 env.hosts = ['54.157.148.186', '54.158.189.0']
@@ -28,7 +28,7 @@ def do_pack():
 def do_deploy(archive_path):
     """This function distributes an archive to your web servers.
     """
-    if not (exists(archive_path)):
+    if (isfile(archive_path) is False):
         return False
     name_tgz = archive_path.split('/')[1]
     name_notgz = name_tgz.split('.')[0]
@@ -38,17 +38,17 @@ def do_deploy(archive_path):
     task = sudo("rm -rf /data/web_static/releases/{}".format(name_notgz))
     if task.failed is True:
         return False
-    task = sudo("mkdir -p /data/web_static/releases/{}".format(name_notgz))
+    task = sudo("mkdir -p /data/web_static/releases/{}/".format(name_notgz))
     if task.failed is True:
         return False
-    task = sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
+    task = sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
         name_tgz, name_notgz))
     if task.failed is True:
         return False
     task = sudo("rm /tmp/{}".format(name_tgz))
     if task.failed is True:
         return False
-    task = sudo(("mv -f /data/web_static/releases/{}/web_static/* " +
+    task = sudo(("mv /data/web_static/releases/{}/web_static/* " +
                  "/data/web_static/releases/{}/").format(
                      name_notgz, name_notgz))
     if task.failed is True:
