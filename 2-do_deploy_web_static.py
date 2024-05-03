@@ -19,7 +19,7 @@ def do_deploy(archive_path):
         return False
     name_tgz = archive_path.split('/')[-1]
     name_notgz = name_tgz.split('.')[0]
-    task = put(archive_path, "/tmp/{}".format(name_tgz))
+    task = put(archive_path, "/tmp/")
     if task.failed is True:
         return False
     task = sudo("rm -rf /data/web_static/releases/{}/".format(name_notgz))
