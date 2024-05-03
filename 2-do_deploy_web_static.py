@@ -32,19 +32,17 @@ def do_deploy(archive_path):
         return False
     name_tgz = archive_path.split('/')[1]
     name_notgz = name_tgz.split('.')[0]
-    try:
-        put(archive_path, "/tmp/{}".format(name_tgz))
-        sudo("mkdir -p /data/web_static/releases/{}".format(name_notgz))
-        sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
-            name_tgz, name_notgz))
-        sudo("rm /tmp/{}".format(name_tgz))
-        sudo(("mv /data/web_static/releases/{}/web_static/* " +
-              "/data/web_static/releases/{}").format(name_notgz, name_notgz))
-        sudo("rm -rf /data/web_static/releases/{}/web_static".format(
-            name_notgz))
-        sudo("rm -rf /data/web_static/current")
-        sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
-             .format(name_notgz))
-    except Exception:
-        return False
+    put(archive_path, "/tmp/{}".format(name_tgz))
+    sudo("rm -rf /data/web_static/releases/{}".format(name_notgz))
+    sudo("mkdir -p /data/web_static/releases/{}".format(name_notgz))
+    sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
+        name_tgz, name_notgz))
+    sudo("rm /tmp/{}".format(name_tgz))
+    sudo(("mv -f /data/web_static/releases/{}/web_static/* " +
+          "/data/web_static/releases/{}/").format(name_notgz, name_notgz))
+    sudo("rm -rf /data/web_static/releases/{}/web_static/".format(
+        name_notgz))
+    sudo("rm -rf /data/web_static/current")
+    sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
+         .format(name_notgz))
     return True
