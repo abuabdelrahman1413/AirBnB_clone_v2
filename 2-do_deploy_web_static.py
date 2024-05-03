@@ -30,7 +30,7 @@ def do_deploy(archive_path):
     """
     if (isfile(archive_path) is False):
         return False
-    name_tgz = archive_path.split('/')[1]
+    name_tgz = archive_path.split('/')[-1]
     name_notgz = name_tgz.split('.')[0]
     task = put(archive_path, "/tmp/{}".format(name_tgz))
     if task.failed is True:
