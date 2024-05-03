@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This script generates a .tgz archive from the contents of
+0;10;1c"""This script generates a .tgz archive from the contents of
 the web_static folder of your AirBnB Clone repo, using the
 function do_pack
 """
@@ -32,17 +32,35 @@ def do_deploy(archive_path):
         return False
     name_tgz = archive_path.split('/')[1]
     name_notgz = name_tgz.split('.')[0]
-    put(archive_path, "/tmp/{}".format(name_tgz))
-    sudo("rm -rf /data/web_static/releases/{}".format(name_notgz))
-    sudo("mkdir -p /data/web_static/releases/{}".format(name_notgz))
-    sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
+    task = put(archive_path, "/tmp/{}".format(name_tgz))
+    if task.failed is True:
+        return False
+    task = sudo("rm -rf /data/web_static/releases/{}".format(name_notgz))
+    if task.failed is True:
+        return False
+    task = sudo("mkdir -p /data/web_static/releases/{}".format(name_notgz))
+    if task.failed is True:
+        return False
+    task = sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}".format(
         name_tgz, name_notgz))
-    sudo("rm /tmp/{}".format(name_tgz))
-    sudo(("mv -f /data/web_static/releases/{}/web_static/* " +
+    if task.failed is True:
+        return False
+    task = sudo("rm /tmp/{}".format(name_tgz))
+    if task.failed is True:
+        return False
+    task = sudo(("mv -f /data/web_static/releases/{}/web_static/* " +
           "/data/web_static/releases/{}/").format(name_notgz, name_notgz))
-    sudo("rm -rf /data/web_static/releases/{}/web_static/".format(
+    if task.failed is True:
+        return False
+    task = sudo("rm -rf /data/web_static/releases/{}/web_static/".format(
         name_notgz))
-    sudo("rm -rf /data/web_static/current")
-    sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
+    if task.failed is True:
+        return False
+    task = sudo("rm -rf /data/web_static/current")
+    if task.failed is True:
+        return False
+    task = sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
          .format(name_notgz))
+    if task.failed == True:
+        return False
     return True
