@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-0;10;1c"""This script generates a .tgz archive from the contents of
+"""This script generates a .tgz archive from the contents of
 the web_static folder of your AirBnB Clone repo, using the
 function do_pack
 """
@@ -49,7 +49,8 @@ def do_deploy(archive_path):
     if task.failed is True:
         return False
     task = sudo(("mv -f /data/web_static/releases/{}/web_static/* " +
-          "/data/web_static/releases/{}/").format(name_notgz, name_notgz))
+                 "/data/web_static/releases/{}/").format(
+                     name_notgz, name_notgz))
     if task.failed is True:
         return False
     task = sudo("rm -rf /data/web_static/releases/{}/web_static/".format(
@@ -60,7 +61,7 @@ def do_deploy(archive_path):
     if task.failed is True:
         return False
     task = sudo("ln -sf /data/web_static/releases/{} /data/web_static/current"
-         .format(name_notgz))
-    if task.failed == True:
+                .format(name_notgz))
+    if task.failed is True:
         return False
     return True
