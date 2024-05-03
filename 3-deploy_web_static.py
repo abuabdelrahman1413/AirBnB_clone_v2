@@ -3,19 +3,15 @@
 to your web servers, using the function deploy
 """
 from fabric.api import *
+from datetime import datetime
+from os.path import exists, isfile
+
+
+env.hosts = ['54.157.148.186', '54.158.189.0']
+env.user = 'ubuntu'
 
 
 def do_pack():
-    """This function generates a .tgz archive from the contents of
-    the web_static folder of your AirBnB Clone repo.
-    """
-    local("mkdir -p versions")
-    path = "versions/web_static_{}.tgz".format(
-        datetime.now().strftime("%Y%m%d%H%M%S"))
-    local("tar -cvzf {} ./web_static".format(path))
-    if (exists(path)):
-        return path
-    return Nonedef do_pack():
     """This function generates a .tgz archive from the contents of
     the web_static folder of your AirBnB Clone repo.
     """
@@ -54,10 +50,11 @@ def do_deploy(archive_path):
     except Exception:
         return False
 
+
 def deploy():
     """This function created and distributes an architec to my web servers.
     """
     path = do_pack()
     if path is None:
         return False
-    return do_deploy(architve_path=path)
+    return do_deploy(archive_path=path)
