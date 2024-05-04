@@ -13,8 +13,8 @@ package { 'nginx_installer':
 }
 
 exec { 'test_dir':
-     command  => 'sudo mkdir -p /data/web_static/releases/test/',
-     provider => shell,
+  command  => 'sudo mkdir -p /data/web_static/releases/test/',
+  provider => shell,
 }
 
 exec { 'shared_dir':
@@ -23,14 +23,14 @@ exec { 'shared_dir':
 }
 
 exec {'create_index':
-     command  => 'echo "<html>\n\t<head>\n\t</head>\n\t<body>\n\t\tHolberton School\n\t</body>\n</html>" | sudo tee /data/web_static/releas\
+  command  => 'echo "<html>\n\t<head>\n\t</head>\n\t<body>\n\t\tHolberton School\n\t</body>\n</html>" | sudo tee /data/web_static/releas\
 es/test/index.html',
-     provider => shell,
+  provider => shell,
 }
 
 exec { 'symlink':
-     command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
-     provider => shell,
+  command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
+  provider => shell,
 }
 
 file { 'chown_grp':
