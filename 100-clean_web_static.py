@@ -27,7 +27,9 @@ def do_clean(number=0):
     output = output.split('\n')
     output.pop(0)
     i = number
+    delstr = ""
     while i <= (len(output) - 1):
-        filename = output[i].split(' ')[-1]
-        sudo("rm -rf /data/web_static/releases/{}".format(filename))
+        filename = " /data/web_static/releases/"+output[i].split(' ')[-1]
+        delstr += filename
         i += 1
+    sudo("rm -rf {}".format(deltstr))
