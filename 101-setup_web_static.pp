@@ -1,3 +1,4 @@
+File Edit Options Buffers Tools Help
 # This manifest installs nginx on a webserver and
 # configures the /hbnb_static location in the nginx
 # config file.
@@ -12,31 +13,24 @@ package { 'nginx_installer':
 }
 
 exec { 'test_dir':
-     command => 'sudo mkdir -p /data/web_static/releases/test/',
+     command  => 'sudo mkdir -p /data/web_static/releases/test/',
      provider => shell,
 }
 
 exec { 'shared_dir':
-  command => 'sudo mkdir -p /data/web_static/shared',
-  provider   => shell,
+  command  => 'sudo mkdir -p /data/web_static/shared',
+  provider => shell,
 }
 
-file { 'index_html':
-  ensure  => 'file',
-  path    => '/data/web_static/releases/test/index.html',
-  content => '<html>
-      <head>
-      </head>
-      <body>
-          Holberton School
-      </body>
-</html>',
+exec {'create_index':
+     command  => 'echo "<html>\n\t<head>\n\t</head>\n\t<body>\n\t\tHolberton School\n\t</body>\n</html>" | sudo tee /data/web_static/releas\
+es/test/index.html',
+     provider => shell,
 }
 
-file { 'symlink':
-  ensure => 'link',
-  path   => '/data/web_static/current',
-  target => '/data/web_static/releases/test/'
+exec { 'symlink':
+     command  => 'sudo ln -sf /data/web_static/releases/test/ /data/web_static/current',
+     provider => shell,
 }
 
 file { 'chown_grp':
