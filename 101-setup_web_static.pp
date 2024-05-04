@@ -32,6 +32,15 @@ exec { 'symlink':
   provider => shell,
 }
 
+group { 'ubuntu':
+  ensure => 'present',
+}
+
+user { 'ubuntu':
+  ensure     => 'present',
+  managehome => true,
+}
+
 file { 'chown_grp':
   ensure  => 'directory',
   path    => '/data/',
