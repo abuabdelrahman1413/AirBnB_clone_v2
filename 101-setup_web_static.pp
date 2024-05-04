@@ -11,14 +11,14 @@ package { 'nginx_installer':
   provider => 'apt',
 }
 
-file { 'test_dir':
-  ensure => 'directory',
-  path   => '/data/web_static/releases/test/',
+exec { 'test_dir':
+     command => 'sudo mkdir -p /data/web_static/releases/test/',
+     provider => shell,
 }
 
-file { 'shared_dir':
-  ensure => 'directory',
-  path   => '/data/web_static/shared',
+exec { 'shared_dir':
+  command => 'sudo mkdir -p /data/web_static/shared',
+  provider   => shell,
 }
 
 file { 'index_html':
