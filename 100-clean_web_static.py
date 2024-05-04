@@ -14,9 +14,10 @@ def do_clean(number=0):
     output = local("ls -lt ./versions/", capture=True)
     output = output.split('\n')
     output.pop(0)
-    if number == "0":
+    number = int(number)
+    if number == 0:
         number = 1
-    i = int(number)
+    i = number
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
         local("rm ./versions/{}".format(filename))
@@ -25,10 +26,9 @@ def do_clean(number=0):
     output = run("ls -lt /data/web_static/releases")
     output = output.split('\n')
     output.pop(0)
-    if number == "0":
-        number = 1
+    print(output)
     i = int(number)
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
-        local("rm /data/web_static/releases/{}".format(filename))
+        run("rm /data/web_static/releases/{}".format(filename))
         i += 1
