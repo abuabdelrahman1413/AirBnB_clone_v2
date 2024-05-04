@@ -20,7 +20,7 @@ def do_clean(number=0):
     i = number
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
-        local("rm ./versions/{}".format(filename))
+        local("rm -rf ./versions/{}".format(filename))
         i += 1
 
     output = run("ls -lt /data/web_static/releases")
@@ -30,5 +30,5 @@ def do_clean(number=0):
     i = int(number)
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
-        run("rm /data/web_static/releases/{}".format(filename))
+        run("rm -rf /data/web_static/releases/{}".format(filename))
         i += 1
