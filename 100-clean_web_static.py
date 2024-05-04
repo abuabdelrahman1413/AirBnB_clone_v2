@@ -26,10 +26,13 @@ def do_clean(number=0):
     output = sudo("ls -lt /data/web_static/releases")
     output = output.split('\n')
     output.pop(0)
+    print(output)
     i = number
     delstr = ""
     while i <= (len(output) - 1):
-        filename = " /data/web_static/releases/"+output[i].split(' ')[-1]
+        fil = output[i].split(' ')[-1].replace('\r', '')
+        filename = " /data/web_static/releases/" + fil + " "
         delstr += filename
         i += 1
-    sudo("rm -rf {}".format(deltstr))
+    print(delstr)
+    sudo("rm -rf {}".format(delstr))
