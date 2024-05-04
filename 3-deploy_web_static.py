@@ -11,6 +11,7 @@ env.hosts = ['54.157.148.186', '54.158.189.0']
 env.user = 'ubuntu'
 
 
+@runs_once
 def do_pack():
     """This function generates a .tgz archive from the contents of
     the web_static folder of your AirBnB Clone repo.
