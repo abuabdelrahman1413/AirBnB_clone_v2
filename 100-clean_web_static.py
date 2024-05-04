@@ -26,8 +26,7 @@ def do_clean(number=0):
     output = run("ls -lt /data/web_static/releases")
     output = output.split('\n')
     output.pop(0)
-    print(output)
-    i = int(number)
+    i = number
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
         sudo("rm -rf /data/web_static/releases/{}".format(filename))
