@@ -1,4 +1,3 @@
-File Edit Options Buffers Tools Help
 # This manifest installs nginx on a webserver and
 # configures the /hbnb_static location in the nginx
 # config file.
