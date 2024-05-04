@@ -30,5 +30,5 @@ def do_clean(number=0):
     i = int(number)
     while i <= (len(output) - 1):
         filename = output[i].split(' ')[-1]
-        run("rm -rf /data/web_static/releases/{}".format(filename))
+        sudo("rm -rf /data/web_static/releases/{}".format(filename))
         i += 1
