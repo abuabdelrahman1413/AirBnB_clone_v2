@@ -22,33 +22,33 @@ def do_deploy(archive_path):
     task = put(archive_path, "/tmp/")
     if task.failed is True:
         return False
-    task = sudo("rm -rf /data/web_static/releases/{}/".format(name_notgz))
+    task = run("rm -rf /data/web_static/releases/{}/".format(name_notgz))
     if task.failed is True:
         return False
-    task = sudo("mkdir -p /data/web_static/releases/{}/".format(name_notgz))
+    task = run("mkdir -p /data/web_static/releases/{}/".format(name_notgz))
     if task.failed is True:
         return False
-    task = sudo("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
+    task = run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".format(
         name_tgz, name_notgz))
     if task.failed is True:
         return False
-    task = sudo("rm /tmp/{}".format(name_tgz))
+    task = run("rm /tmp/{}".format(name_tgz))
     if task.failed is True:
         return False
-    task = sudo(("mv /data/web_static/releases/{}/web_static/* " +
-                 "/data/web_static/releases/{}/").format(
+    task = run(("mv /data/web_static/releases/{}/web_static/* " +
+                "/data/web_static/releases/{}/").format(
                      name_notgz, name_notgz))
     if task.failed is True:
         return False
-    task = sudo("rm -rf /data/web_static/releases/{}/web_static".format(
+    task = run("rm -rf /data/web_static/releases/{}/web_static".format(
         name_notgz))
     if task.failed is True:
         return False
-    task = sudo("rm -rf /data/web_static/current")
+    task = run("rm -rf /data/web_static/current")
     if task.failed is True:
         return False
-    task = sudo("ln -s /data/web_static/releases/{}/ /data/web_static/current"
-                .format(name_notgz))
+    task = run("ln -s /data/web_static/releases/{}/ /data/web_static/current"
+               .format(name_notgz))
     if task.failed is True:
         return False
     return True
