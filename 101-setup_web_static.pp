@@ -23,7 +23,7 @@ file { 'shared_dir':
 
 file { 'index_html':
   ensure  => 'file',
-  path    => '/data/web_static/releases/test/index.html'
+  path    => '/data/web_static/releases/test/index.html',
   content => '<html>
       <head>
       </head>
