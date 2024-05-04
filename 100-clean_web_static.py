@@ -23,7 +23,7 @@ def do_clean(number=0):
         local("rm -rf ./versions/{}".format(filename))
         i += 1
 
-    output = run("ls -lt /data/web_static/releases")
+    output = sudo("ls -lt /data/web_static/releases")
     output = output.split('\n')
     output.pop(0)
     i = number
