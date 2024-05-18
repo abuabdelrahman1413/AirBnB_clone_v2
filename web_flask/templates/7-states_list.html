@@ -8,7 +8,7 @@
         <UL>
 	  {% set sorted_states = objects|sort(attribute='name') %}
 	  {%- for state in sorted_states %}
-	      <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
+	    <LI>{{ state.id }}: <B>{{ state.name }}</B></LI>
 	  {% endfor %}
         </UL>
     </BODY>

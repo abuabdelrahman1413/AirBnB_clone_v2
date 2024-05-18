@@ -15,11 +15,6 @@ from models.review import Review
 app = Flask(__name__)
 
 
-@app.teardown_appcontext
-def close_sess(exception=None):
-    storage.close()
-
-
 @app.route('/states_list', strict_slashes=False)
 def list_states():
     state_dict = storage.all(State)
@@ -27,6 +22,11 @@ def list_states():
     for key, value in state_dict.items():
         str_dicts.append(value.to_dict())
     return render_template('7-states_list.html', objects=str_dicts)
+
+
+@app.teardown_appcontext
+def close_sess(exception=None):
+    storage.close()
 
 
 if __name__ == "__main__":
