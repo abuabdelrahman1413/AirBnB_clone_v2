@@ -11,7 +11,7 @@ app = Flask(__name__)
 def hello_hbnb():
     """ defines the page to display at '/'
     """
-    return "<h1>Hello HBNB!</h1>"
+    return "<p>Hello HBNB!</p>"
 
 
 if __name__ == '__main__':
