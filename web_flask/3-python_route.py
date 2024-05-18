@@ -30,12 +30,11 @@ def c_text(text):
 
 
 @app.route('/python/<text>', strict_slashes=False)
-def c_text(text="is cool"):
+def python_text(text="is cool"):
     """ defines the page to display at '/python/'
     followed by any text
     """
     return "Python {}".format(text).replace("_", " ")
-
 
 
 if __name__ == '__main__':
