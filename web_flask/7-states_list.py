@@ -17,11 +17,11 @@ def close_sess(exception=None):
 @app.route('/states_list', strict_slashes=False)
 def list_states():
     state_dict = storage.all(State)
-    str_dict = []
+    str_list = []
     for key, value in state_dict.items():
-        str_dict.append(value.to_dict())
-    print(str_dict)
-    return render_template('7-states_list.html', objects=str_dict)
+        str_list.append(value.to_dict())
+    sorted_list = sorted(str_list, key=lambda k: k['name'])
+    return render_template('7-states_list.html', objects=sorted_list)
 
 
 if __name__ == "__main__":
