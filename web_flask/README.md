@@ -1,0 +1,1 @@
+This directory implements the flask logic of the AirBnB_clone project.
