@@ -6,8 +6,11 @@ from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
+    """ defines the page to display at '/'
+    """
     return "<h1>Hello HBNB!</h1>"
 
 
