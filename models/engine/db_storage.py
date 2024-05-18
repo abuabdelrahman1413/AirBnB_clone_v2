@@ -92,3 +92,9 @@ class DBStorage:
             bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()
+
+
+    def close(self):
+        """Closes the current Session of SQLAlchemy
+        """
+        self.__session.close()
