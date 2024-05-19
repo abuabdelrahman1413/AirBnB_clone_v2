@@ -11,7 +11,7 @@
             <LI>{{ one.id }}: <B>{{ one.name }}</B></LI>
           {% endfor %}
         </UL>
-        {% else %}
+    {% else %}
         {% if state == "NotFound" %}
         <H1>Not Found!</H1>
         {% else %}
@@ -23,6 +23,6 @@
           {% endfor %}
         </UL>
         {% endif %}
-        {% endif %}
+    {% endif %}
     </BODY>
  </HTML>
