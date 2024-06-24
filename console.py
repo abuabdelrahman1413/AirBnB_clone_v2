@@ -133,34 +133,23 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         # create new instance
-        new_instance = HBNBCommand.classes[command[0]]()
-
-        # parse key value pairs after converting to right type
-        index_command = 0
-        while index_command < len(command):
-            param = command[index_command]
+        class_name = command[0]
+        new_instance = HBNBCommand.classes[class_name]()
+        # parse key value pairs and set attributes
+        for param in command[1:]:
             try:
                 key, value = param.split("=")
                 if value.startswith("\"") and value.endswith("\""):
-                    value = value.replace('_', ' ')
-                    value = value.replace('"', '\"')
-
+                    value = value[1:-1].replace('_', ' ').replace('\\\"', '\"')
                 elif "." in value:
-                    try:
-                        value = float(value)
-                    except ValueError:
-                        continue
+                    value = float(value)
                 else:
-                    try:
-                        value = int(value)
-                    except ValueError:
-                        continue
+                    value = int(value)
+                setattr(new_instance, key, value)
             except Exception as e:
-                pass
-
-            index_command += 1
+                continue
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """Help information for the create method"""
