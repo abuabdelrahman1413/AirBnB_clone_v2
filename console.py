@@ -137,7 +137,30 @@ class HBNBCommand(cmd.Cmd):
 
         # parse key value pairs after converting to right type
         index_command = 0
-        while index_command < len(command) - 1:
+        while index_command < len(command):
+            param = command[index_command]
+            try:
+                key, value = param.split("=")
+                if value.startswith("\"") and value.endswith("\""):
+                    value = value.replace('_', ' ')
+                    value = value.replace('"', '\"')
+
+                elif "." in value:
+                    try:
+                        value = float(value)
+                    except ValueError:
+                        continue
+                else:
+                    try:
+                        value = int(value)
+                    except ValueError:
+                        continue
+            except Exception as e:
+                pass
+
+            index_command += 1
+        print(new_instance.id)
+        storage.save()
 
     def help_create(self):
         """Help information for the create method"""
