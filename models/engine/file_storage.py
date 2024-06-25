@@ -27,6 +27,7 @@ class FileStorage:
             key = obj.__class__.name__ + "." + obj.id
             for key in self.__objects:
                 del self.__objects[key]
+        return
 
     def new(self, obj):
         """Adds new object to storage dictionary"""
