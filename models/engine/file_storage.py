@@ -11,7 +11,7 @@ class FileStorage:
 
     # update all to returns the list of objects of one type of class.
     def all(self, cls=None):
-        if cls:
+        if cls is not None:
             new_dict = {}
             for key, value in self.__objects:
                 if cls == value.__class__ or cls == value.__class__name:
@@ -21,7 +21,7 @@ class FileStorage:
 
     # delete method
     def delete(self, obj=None):
-        if obj:
+        if obj is not None:
             key = obj.__class__.name__ + "." + obj.id
             for key in self.__objects:
                 del self.__objects[key]
