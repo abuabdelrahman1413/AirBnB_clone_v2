@@ -12,7 +12,7 @@ class FileStorage:
     # update all to returns the list of objects of one type of class.
     def all(self, cls=None):
         """Returns a dictionary of models in JSON format"""
-        if cls is not None:
+        if cls:
             new_dict = {}
             for key, value in self.__objects:
                 if cls == value.__class__ or cls == value.__class__name:
@@ -23,7 +23,7 @@ class FileStorage:
     # delete method
     def delete(self, obj=None):
         """Delete obj from __objects if it’s inside"""
-        if obj is not None:
+        if obj:
             key = obj.__class__.name__ + "." + obj.id
             for key in self.__objects:
                 del self.__objects[key]
