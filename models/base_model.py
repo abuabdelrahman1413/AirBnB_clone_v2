@@ -12,14 +12,9 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-
-    id = Column(String(60), primary_key=True,
-                nullable=False, unique=True)
-    created_at = Column(DateTime, nullable=False,
-                        default=datetime.datetime.utcnow)
-    updated_at = Column(DateTime, nullable=False,
-                        default=datetime.datetime.utcnow,
-                        onupdate=datetime.datetime.utcnow)
+    id = Column(String(60), primary_key=True, nullable=False)
+    created_at = Column(DateTime, default=datetime.now(), nullable=False)
+    updated_at = Column(DateTime, nullable=False, default=datetime.now())
 
     def __init__(self, *args, **kwargs) -> None:
         """Initialization of BaseModel Class"""
@@ -34,7 +29,6 @@ class BaseModel:
                     setattr(self, key, date)
                 elif key != "__class__":
                     setattr(self, key, value)
-
     def __str__(self):
         """Returns a string representation of the instance"""
         cls = (str(type(self)).split(".")[-1]).split("'")[0]
