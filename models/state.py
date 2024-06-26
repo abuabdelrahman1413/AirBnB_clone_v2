@@ -21,9 +21,7 @@ class State(BaseModel, Base):
 # objects should be deleted if the parent State is deleted.
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        cities = relationship(
-            "City", backref="state", cascade="all, delete-orphan"
-        )
+        cities = relationship("City", backref="state", cascade="all, delete")
     else:
         @property
         def cities(self):
