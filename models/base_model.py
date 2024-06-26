@@ -12,22 +12,27 @@ Base = declarative_base()
 
 class BaseModel:
     """A base class for all hbnb models"""
-    id = Column(String(60), primary_key=True, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
-    updated_at = Column(DateTime, nullable=False, default=datetime.utcnow())
 
-    def __init__(self, *args, **kwargs):
+    id = Column(String(60), primary_key=True,
+                nullable=False, unique=True)
+    created_at = Column(DateTime, nullable=False,
+                        default=datetime.datetime.utcnow)
+    updated_at = Column(DateTime, nullable=False,
+                        default=datetime.datetime.utcnow,
+                        onupdate=datetime.datetime.utcnow)
+
+    def __init__(self, *args, **kwargs) -> None:
         """Initialization of BaseModel Class"""
         self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        self.created_at = datetime.datetime.now()
+        self.updated_at = datetime.datetime.now()
         if kwargs:
             for key, value in kwargs.items():
-                if key == 'created_at' or key == 'updated_at':
-                    setattr(self, key, datetime.strptime(value, "%Y-%m-%dT%H\
-                    :%M:%S.%f"))
-                # assign new attributes
-                elif key != '__class__':
+                if key in ["created_at", "updated_at"]:
+                    date = datetime.datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f")
+                    setattr(self, key, date)
+                elif key != "__class__":
                     setattr(self, key, value)
 
     def __str__(self):
