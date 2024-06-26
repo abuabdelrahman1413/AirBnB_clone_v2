@@ -44,21 +44,24 @@ class DBStorage:
         """
         Returns a dict of objects
         """
-        new_dict = {}
-        classes = ['State', 'City', 'User', 'Place', 'Review', 'Amenity']
-        session = self.__session
+        tempDict = {}
         if cls is not None:
-            query = session.query(cls)
-            for obj in query:
-                key = obj.__class__.__name__ + '.' + obj.id
-                new_dict[key] = obj
+            for obj in self.__session.query(cls):
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
         else:
-            for cls_name in classes:
-                query = session.query(eval(cls_name))
-                for obj in query:
-                    key = obj.__class__.__name__ + '.' + obj.id
-                    new_dict[key] = obj
-        return new_dict
+            for obj in self.__session.query(User).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+            for obj in self.__session.query(State).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+            for obj in self.__session.query(City).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+            for obj in self.__session.query(Amenity).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+            for obj in self.__session.query(Place).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+            for obj in self.__session.query(Review).all():
+                tempDict[obj.__class__.__name__ + '.' + obj.id] = obj
+        return tempDict
 
     def new(self, obj):
         """
