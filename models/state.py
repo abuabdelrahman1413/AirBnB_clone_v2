@@ -3,36 +3,33 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+from models.city import City
 from os import getenv
+
+storage_type = getenv("HBNB_TYPE_STORAGE")
 
 
 class State(BaseModel, Base):
     """ State class """
+
     __tablename__ = 'states'
-    name = Column(String(128), nullable=False)
-
-# cities = relationship("City", backref="state", cascade="all, delete"):
-# This sets up a one-to-many relationship between State and City.
-# The cities attribute will hold all City instances that reference
-# this State instance.
-# backref="state": This creates a bidirectional relationship. Each City will
-# have a state attribute that references its parent State.
-# cascade="all, delete": This specifies that all associated City
-# objects should be deleted if the parent State is deleted.
-
-    if getenv("HBNB_TYPE_STORAGE") == "db":
-        cities = relationship("City", backref="state", cascade="all, delete")
+    if storage_type == "db":
+        name = Column(String(128), nullable=False)
+        cities = relationship('City', cascade="all,delete", backref="state")
     else:
+        name = ""
+        # DONE: for FileStorage: getter attribute cities that
+        # returns the list of City instances with state_id equals
+        # to the current State.id => It will be the FileStorage
+        # relationship between State and City
+
         @property
         def cities(self):
-            """
-            Returns the list of City objects
-            with state_id equal to the current State.id
-            """
+            """getter docuemnt"""
             from models import storage
-            from models.city import City
-            city_list = []
-            for city in storage.all(City).values():
+            citiesList = []
+            citiesAll = storage.all(City)
+            for city in citiesAll.values():
                 if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+                    citiesList.append(city)
+            return citiesList
