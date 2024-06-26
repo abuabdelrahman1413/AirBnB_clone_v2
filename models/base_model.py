@@ -58,3 +58,8 @@ class BaseModel:
         if '_sa_instance_state' in dictionary:
             del dictionary['_sa_instance_state']
         return dictionary
+    
+        # delete method for the base model
+    def delete(self):
+        """Deletes the instance"""
+        models.storage.delete(self)
