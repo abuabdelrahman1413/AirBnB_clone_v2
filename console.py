@@ -27,6 +27,41 @@ class HBNBCommand(cmd.Cmd):
         "Amenity": Amenity,
         "Review": Review,
     }
+
+    valid_keys = {
+        "BaseModel": ["id", "created_at", "updated_at"],
+        "User": [
+            "id",
+            "created_at",
+            "updated_at",
+            "email",
+            "password",
+            "first_name",
+            "last_name",
+        ],
+        "City": ["id", "created_at", "updated_at", "state_id", "name"],
+        "State": ["id", "created_at", "updated_at", "name"],
+        "Place": [
+            "id",
+            "created_at",
+            "updated_at",
+            "city_id",
+            "user_id",
+            "name",
+            "description",
+            "number_rooms",
+            "number_bathrooms",
+            "max_guest",
+            "price_by_night",
+            "latitude",
+            "longitude",
+            "amenity_ids"
+        ],
+        "Amenity": ["id", "created_at", "updated_at", "name"],
+        "Review": ["id", "created_at", "updated_at",
+                   "place_id", "user_id", "text"],
+    }
+
     dot_cmds = ["all", "count", "show", "destroy", "update"]
     types = {
         "number_rooms": int,
@@ -123,31 +158,52 @@ class HBNBCommand(cmd.Cmd):
         """Overrides the emptyline method of CMD"""
         pass
 
-    def do_create(self, args):
-        """Create an object of any class"""
-        command = args.split()
-        if not args:
-            print("** class name missing **")
-            return
-        elif command[0] not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        # create new instance
-        class_name = command[0]
-        new_instance = HBNBCommand.classes[class_name]()
-        # parse key value pairs and set attributes
-        for param in command[1:]:
+    def parse_value(self, value):
+        """cast string to float or int if possible"""
+        is_valid_value = True
+        # To be a valid string it must be of at least length 2 i.e. ""
+        # To be a valid string it must begin and end with
+        # double quoatation i.e. "sdsds"
+        if len(value) >= 2 and value[0] == '"'\
+                and value[len(value) - 1] == '"':
+            value = value[1:-1]
+            value = value.replace("_", " ")
+        else:
             try:
-                key, value = param.split("=")
-                if value.startswith("\"") and value.endswith("\""):
-                    value = value[1:-1].replace('_', ' ').replace('\\\"', '\"')
-                elif "." in value:
+                if "." in value:
                     value = float(value)
                 else:
                     value = int(value)
-                setattr(new_instance, key, value)
-            except Exception as e:
-                continue
+            except ValueError:
+                is_valid_value = False
+
+        if is_valid_value:
+            return value
+        else:
+            return None
+
+    def do_create(self, args):
+        """Create an object of any class"""
+        if not args:
+            print("** class name missing **")
+            return
+        args_array = args.split()
+        class_name = args_array[0]
+        if class_name not in HBNBCommand.classes:
+            print("** class doesn't exist **")
+            return
+        new_instance = HBNBCommand.classes[class_name]()
+        for param_index in range(1, len(args_array)):
+            param_array = args_array[param_index].split("=")
+            if len(param_array) == 2:
+                key = param_array[0]
+                if key not in HBNBCommand.valid_keys[class_name]:
+                    continue
+                value = self.parse_value(param_array[1])
+                if value is not None:
+                    setattr(new_instance, key, value)
+            else:
+                pass
         new_instance.save()
         print(new_instance.id)
 
@@ -231,13 +287,12 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 if k.split(".")[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
-
         print(print_list)
 
     def help_all(self):
@@ -248,7 +303,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split(".")[0]:
                 count += 1
         print(count)
